@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX_LIKINGS = 5
+#define MAX_LIKINGS 5
 
 typedef struct{
     char Username;
@@ -28,7 +28,7 @@ int menu(){
             //Salir
         }
         else {
-            printf("La opción que has elegído no és valida, vuelva a intentar-lo")
+            printf("La opción que has elegído no és valida, vuelva a intentar-lo");
             scanf("%d",&opt);
         }
     }
