@@ -153,6 +153,30 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/EDA2.dir/build.make CMakeFiles/EDA2.dir/main.c.s
 .PHONY : main.c.s
 
+proves.o: proves.c.o
+.PHONY : proves.o
+
+# target to build an object file
+proves.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EDA2.dir/build.make CMakeFiles/EDA2.dir/proves.c.o
+.PHONY : proves.c.o
+
+proves.i: proves.c.i
+.PHONY : proves.i
+
+# target to preprocess a source file
+proves.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EDA2.dir/build.make CMakeFiles/EDA2.dir/proves.c.i
+.PHONY : proves.c.i
+
+proves.s: proves.c.s
+.PHONY : proves.s
+
+# target to generate assembly for a file
+proves.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/EDA2.dir/build.make CMakeFiles/EDA2.dir/proves.c.s
+.PHONY : proves.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -165,6 +189,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... proves.o"
+	@echo "... proves.i"
+	@echo "... proves.s"
 .PHONY : help
 
 
