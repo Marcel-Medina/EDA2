@@ -4,6 +4,12 @@
 #define MAX_LIKINGS 5
 #define MAX_LENGTH 50
 
+typedef struct llista_solicituds{
+    char persona;
+    struct llista_solicituds *tail;
+    struct llista_solicituds *head;
+}Solicituds;
+
 typedef struct user_t{
     char Username[MAX_LENGTH];
     int Age;
@@ -11,13 +17,26 @@ typedef struct user_t{
     char Location[MAX_LENGTH];
     char List_Likings[MAX_LIKINGS][MAX_LENGTH+1];
     struct user_t *next; // punter al següent usuari de la llista
+    Solicituds llista;
 }User;
 
 
 
-int menu(int *stop, User **head){
+int linear_search(User* index,char usuari[MAX_LENGTH]){
+    while(index->Username != usuari){
+        index = index->next;
+    }
+    if(index == NULL){
+        return -1;
+    }
+    else{
+        return 0;
+    }
+}
 
 
+int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i de head, per poder anar
+                                    modificant els seus valors*/
 
     while (*stop == 0){
 
@@ -75,6 +94,44 @@ int menu(int *stop, User **head){
                 index = index->next; //Passam al següent element
             }
         }
+        else if(opcio == 3){
+
+            printf("Introdueix el nom de l'usuari:\n");
+            char usuari[MAX_LENGTH];
+            scanf("%s",usuari);
+            User *index = *head; //Índex per anar recorrent la llista enllaçada
+
+            if(linear_search(index,usuari) == -1){
+                printf("No existeix l'usuari");
+            }
+            else{
+                int eleccio; //El submenú per a cada usuari
+                printf("\n--------SUBMENU--------\n");
+                printf("1. Enviar sol·licituds d'amistat\n");
+                printf("2. Gestionar les sol·licituds pendents\n");
+                printf("3. Realitzar una publicació\n");
+                printf("4. Llistar les publicacions de l'usuari seleccionat\n");
+                printf("5. Tornar al menu principal\n");
+                printf("--------------------\n");
+                printf("Tria una opció:");
+                scanf("%d",&eleccio);
+                if (eleccio == 1){
+                    printf("Introdueix el nom de l'usuari al qual vols enviar la sol·licitud");
+                    char amic[MAX_LENGTH];
+                    scanf("%s",amic);
+                    int x;
+                    x = linear_search(*head,amic);
+                    if (x == -1){
+                        printf("L'usuari no existeix");
+                    }
+                    else{
+                        //Enviam la sol·licitud d'amistat
+                    }
+
+                }
+            }
+
+        }
         else if(opcio == 4){
             *stop = -1;
         }
@@ -88,13 +145,13 @@ int menu(int *stop, User **head){
 
     }
 
-
-
 int main(){
     int stop = 0;
     User *head = NULL;
     while (menu(&stop,&head) != -1){
     }
+    //Un cop hem acabat alliberam memòria
+
     User *current = head;
     while (current != NULL) {
         User *next = current->next;
