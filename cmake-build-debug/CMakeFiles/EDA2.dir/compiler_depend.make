@@ -74,8 +74,7 @@ CMakeFiles/EDA2.dir/main.c.o: /Users/gori/Desktop/Enginyeria\ Matemàtica\ /2n\ 
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_wchar_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/malloc/_malloc.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_dev_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_mode_t.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stdbool.h
+  /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_mode_t.h
 
 CMakeFiles/EDA2.dir/proves.c.o: /Users/gori/Desktop/Enginyeria\ Matemàtica\ /2n\ trimestre/Estructura\ de\ Dades\ i\ Algoritmes/EDA2/proves.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/stdio.h \
@@ -154,9 +153,9 @@ CMakeFiles/EDA2.dir/proves.c.o: /Users/gori/Desktop/Enginyeria\ Matemàtica\ /2n
   /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stdbool.h
 
 
-/Users/gori/Desktop/Enginyeria\ Matemàtica\ /2n\ trimestre/Estructura\ de\ Dades\ i\ Algoritmes/EDA2/proves.c:
-
 /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stdbool.h:
+
+/Users/gori/Desktop/Enginyeria\ Matemàtica\ /2n\ trimestre/Estructura\ de\ Dades\ i\ Algoritmes/EDA2/proves.c:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_rune_t.h:
 
