@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_LIKINGS 5
 #define MAX_LENGTH 50
@@ -15,7 +16,7 @@ typedef struct user_t{
     int Age;
     char Mail[MAX_LENGTH];
     char Location[MAX_LENGTH];
-    char List_Likings[MAX_LIKINGS][MAX_LENGTH+1];
+    char List_Likings[MAX_LIKINGS][MAX_LENGTH];
     struct user_t *next; // punter al següent usuari de la llista
     Solicituds llista;
 }User;
@@ -79,10 +80,20 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
             scanf("%s",node->Location);
             printf("Correu:");
             scanf("%s",node->Mail);
-            printf("Hobbies:");
-            scanf("%s, %s, %s, %s, %s",node->List_Likings[0],node->List_Likings[1],node->List_Likings[2]
-            ,node->List_Likings[3],node->List_Likings[4]);
+            getchar();
+            printf("5 Hobbies:");
+            char input[MAX_LIKINGS*MAX_LENGTH]; //Cream un string on emmagatzarem tota la línia
+            fgets(input, sizeof(input),stdin);
+            char * token= strtok(input,",");//Dividim tota la linia a través de strtok que utilitza la coma com a delimitador
+            int i = 0;
+            while(token != NULL && i<MAX_LIKINGS){
+                strcpy(node->List_Likings[i],token);//Cada string entre les comes l'emmagatzemem als hobbies de l'usuari
+                token = strtok(NULL,",");
+                i++;
             }
+
+            }
+
         else if(opcio == 2){
             User* index = *head; /*Cream un punter per anar recorrent tota la llista i en primer lloc li assignem el punter
                                  al primer element*/
@@ -96,7 +107,7 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
         }
         else if(opcio == 3){
 
-            printf("Introdueix el nom de l'usuari:\n");
+            printf("Introdueix el nom de l'usuari:");
             char usuari[MAX_LENGTH];
             scanf("%s",usuari);
             User *index = *head; //Índex per anar recorrent la llista enllaçada
@@ -104,7 +115,7 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
             if(linear_search(index,usuari) == -1){
                 printf("No existeix l'usuari");
             }
-            else{
+            else if(linear_search(index,usuari) == 0){
                 int eleccio; //El submenú per a cada usuari
                 printf("\n--------SUBMENU--------\n");
                 printf("1. Enviar sol·licituds d'amistat\n");
@@ -125,7 +136,7 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
                         printf("L'usuari no existeix");
                     }
                     else{
-                        //Enviam la sol·licitud d'amistat
+                        printf("L'usuari existeix");
                     }
 
                 }
