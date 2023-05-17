@@ -81,6 +81,9 @@
 		<Unit filename="/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/main.c">
 			<Option target="EDA2"/>
 		</Unit>
+		<Unit filename="/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/proves.c">
+			<Option target="EDA2"/>
+		</Unit>
 		<Unit filename="/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

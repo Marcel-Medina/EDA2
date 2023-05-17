@@ -92,7 +92,7 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
                 i++;
             }
 
-        }
+            }
 
         else if(opcio == 2){
             User* index = *head; /*Cream un punter per anar recorrent tota la llista i en primer lloc li assignem el punter
@@ -152,9 +152,9 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
             scanf("%d",&opcio);
         }
         return *stop;
-    }
+        }
 
-}
+    }
 
 int main(){
     int stop = 0;
