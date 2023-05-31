@@ -5,118 +5,149 @@
 #define MAX_LIKINGS 5
 #define MAX_LENGTH 50
 
-typedef struct llista_solicituds{
+typedef struct llista_solicituds {
     char persona;
     struct llista_solicituds *tail;
     struct llista_solicituds *head;
-}Solicituds;
+} Solicituds;
 
-typedef struct user_t{
+typedef struct user_t {
     char Username[MAX_LENGTH];
     int Age;
     char Mail[MAX_LENGTH];
     char Location[MAX_LENGTH];
     char List_Likings[MAX_LIKINGS][MAX_LENGTH];
-    struct user_t *next; // punter al següent usuari de la llista
+    struct user_t *next;
     Solicituds llista;
-}User;
+} User;
 
-
-
-int linear_search(User* index,char usuari[MAX_LENGTH]){
-    while(index->Username != usuari){
+int linear_search(User *index, char usuari[MAX_LENGTH]) {
+    while (strcmp(index->Username, usuari) != 0) {
         index = index->next;
     }
-    if(index == NULL){
+    if (index == NULL) {
         return -1;
-    }
-    else{
+    } else {
         return 0;
     }
 }
 
+void insert_user(User **head) {
+    User *node = (User *)malloc(sizeof(User));
+    User *index = *head;
 
-int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i de head, per poder anar
-                                    modificant els seus valors*/
+    if (*head == NULL) {
+        *head = node;
+        node->next = NULL;
+    } else {
+        while (index->next != NULL) {
+            index = index->next;
+        }
+        index->next = node;
+        node->next = NULL;
+    }
 
-    while (*stop == 0){
+    printf("Usuari:");
+    scanf("%s", node->Username);
+    printf("Edat:");
+    scanf("%d", &node->Age);
+    printf("Ubicació:");
+    scanf("%s", node->Location);
+    printf("Correu:");
+    scanf("%s", node->Mail);
+    getchar();
+    printf("5 Hobbies:");
+    char input[MAX_LIKINGS * MAX_LENGTH];
+    fgets(input, sizeof(input), stdin);
+    char *token = strtok(input, ",");
+    int i = 0;
+    while (token != NULL && i < MAX_LIKINGS) {
+        strcpy(node->List_Likings[i], token);
+        token = strtok(NULL, ",");
+        i++;
+    }
+}
 
+void read_users_from_file(User **head, const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo\n");
+        return;
+    }
+
+    char line[MAX_LENGTH * 7];
+
+    while (fgets(line, sizeof(line), file)) {
+        User *node = (User *)malloc(sizeof(User));
+        User *index = *head;
+
+        if (*head == NULL) {
+            *head = node;
+            node->next = NULL;
+        } else {
+            while (index->next != NULL) {
+                index = index->next;
+            }
+            index->next = node;
+            node->next = NULL;
+        }
+
+        sscanf(line, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",node->Username, &node->Age, node->Mail, node->Location,node->List_Likings[0], node->List_Likings[1],node->List_Likings[2], node->List_Likings[3],node->List_Likings[4]);
+    }
+
+    fclose(file);
+}
+
+int menu(int *stop, User **head) {
+    while (*stop == 0) {
         *stop = 0;
         int opcio;
 
         printf("\n--------MENU--------\n");
         printf("1. Insertar un nou usuari\n");
         printf("2. Llistar tots els usuaris\n");
-        printf("3. Operar como un usuari específic\n");
+        printf("3. Operar com un usuari específic\n");
         printf("4. Sortir\n");
         printf("--------------------\n");
         printf("Tria una opció:");
         scanf("%d", &opcio);
 
-        if(opcio == 1){
+        if (opcio == 1) {
+            int subopcio;
+            printf("1. Insertar un nou usuari manualment\n");
+            printf("2. Afegir usuaris des d'un fitxer\n");
+            printf("Tria una opció:");
+            scanf("%d", &subopcio);
 
-            User *node = (User*)malloc(sizeof(User)); //Reservam memèoria pel nou usuari
-            User *index = *head; //Cream un punter per anar recorrent la llista
-
-
-            if(*head == NULL){ /* Si la llista està buida, el nou node serà el primer de la llista,
-                                 i per tant el head apuntarà a aquest node*/
-                *head = node;
-                node->next = NULL;
+            if (subopcio == 1) {
+                insert_user(head);
+            } else if (subopcio == 2) {
+                char filename[MAX_LENGTH];
+                printf("Introdueix el nom del fitxer:");
+                scanf("%s", filename);
+                read_users_from_file(head, filename);
+            } else {
+                printf("Opció no vàlida\n");
             }
-            else{
-                while(index->next != NULL){//Cercam el darrer node
-                    index = index->next;
-                }
-                index->next = node; //El next del que era el darrer node serà el node que hem insertat
-                node->next = NULL; //El next del nou node serà NULL, perquè és el darrer element
+        } else if (opcio == 2) {
+            User *index = *head;
+            if (index == NULL) {
+                printf("La llista està buida\n");
             }
-
-            printf("Usuari:");
-            scanf("%s",node->Username);
-            printf("Edat:");
-            scanf("%d",&node->Age);
-            printf("Ubicació:");
-            scanf("%s",node->Location);
-            printf("Correu:");
-            scanf("%s",node->Mail);
-            getchar();
-            printf("5 Hobbies:");
-            char input[MAX_LIKINGS*MAX_LENGTH]; //Cream un string on emmagatzarem tota la línia
-            fgets(input, sizeof(input),stdin);
-            char * token= strtok(input,",");//Dividim tota la linia a través de strtok que utilitza la coma com a delimitador
-            int i = 0;
-            while(token != NULL && i<MAX_LIKINGS){
-                strcpy(node->List_Likings[i],token);//Cada string entre les comes l'emmagatzemem als hobbies de l'usuari
-                token = strtok(NULL,",");
-                i++;
+            while (index != NULL) {
+                printf("Usuari: %s\n", index->Username);
+                index = index->next;
             }
-
-            }
-
-        else if(opcio == 2){
-            User* index = *head; /*Cream un punter per anar recorrent tota la llista i en primer lloc li assignem el punter
-                                 al primer element*/
-            if(index == NULL){
-                printf("La llista està buida");
-            }
-            while(index != NULL){
-                printf("Usuari: %s\n",index->Username);
-                index = index->next; //Passam al següent element
-            }
-        }
-        else if(opcio == 3){
-
+        } else if (opcio == 3) {
             printf("Introdueix el nom de l'usuari:");
             char usuari[MAX_LENGTH];
-            scanf("%s",usuari);
-            User *index = *head; //Índex per anar recorrent la llista enllaçada
+            scanf("%s", usuari);
+            User *index = *head;
 
-            if(linear_search(index,usuari) == -1){
-                printf("No existeix l'usuari");
-            }
-            else if(linear_search(index,usuari) == 0){
-                int eleccio; //El submenú per a cada usuari
+            if (linear_search(index, usuari) == -1) {
+                printf("No existeix l'usuari\n");
+            } else if (linear_search(index, usuari) == 0) {
+                int eleccio;
                 printf("\n--------SUBMENU--------\n");
                 printf("1. Enviar sol·licituds d'amistat\n");
                 printf("2. Gestionar les sol·licituds pendents\n");
@@ -125,43 +156,27 @@ int menu(int *stop, User **head){ /*Reben com a paràmetres l'adreça de stop i 
                 printf("5. Tornar al menu principal\n");
                 printf("--------------------\n");
                 printf("Tria una opció:");
-                scanf("%d",&eleccio);
-                if (eleccio == 1){
-                    printf("Introdueix el nom de l'usuari al qual vols enviar la sol·licitud");
-                    char amic[MAX_LENGTH];
-                    scanf("%s",amic);
-                    int x;
-                    x = linear_search(*head,amic);
-                    if (x == -1){
-                        printf("L'usuari no existeix");
-                    }
-                    else{
-                        printf("L'usuari existeix");
-                    }
+                scanf("%d", &eleccio);
 
-                }
+                // Aquí debes agregar la lógica para cada opción del submenú
             }
-
-        }
-        else if(opcio == 4){
+        } else if (opcio == 4) {
             *stop = -1;
+        } else {
+            printf("L'opció que has triat no és vàlida, torna a intentar-ho\n");
+            scanf("%d", &opcio);
         }
 
-        else if (opcio != 4){
-            printf("L'opció que has triat no és vàlida, torna a intentar-ho");
-            scanf("%d",&opcio);
-        }
         return *stop;
-        }
-
     }
+}
 
-int main(){
+int main() {
     int stop = 0;
     User *head = NULL;
-    while (menu(&stop,&head) != -1){
+
+    while (menu(&stop, &head) != -1) {
     }
-    //Un cop hem acabat alliberam memòria
 
     User *current = head;
     while (current != NULL) {
