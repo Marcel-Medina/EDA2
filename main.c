@@ -68,8 +68,8 @@ void insert_user(User **head) {
     }
 }
 
-void read_users_from_file(User **head, const char *filename) {
-    FILE *file = fopen(filename, "r");
+void read_users_from_file(User **head) {
+    FILE *file = fopen("../UserList.txt", "r");
     if (file == NULL) {
         printf("No se pudo abrir el archivo\n");
         return;
@@ -123,9 +123,7 @@ int menu(int *stop, User **head) {
                 insert_user(head);
             } else if (subopcio == 2) {
                 char filename[MAX_LENGTH];
-                printf("Introdueix el nom del fitxer:");
-                scanf("%s", filename);
-                read_users_from_file(head, filename);
+                read_users_from_file(head);
             } else {
                 printf("Opció no vàlida\n");
             }
@@ -158,7 +156,9 @@ int menu(int *stop, User **head) {
                 printf("Tria una opció:");
                 scanf("%d", &eleccio);
 
-                // Aquí debes agregar la lógica para cada opción del submenú
+                if(eleccio==1){
+
+                }
             }
         } else if (opcio == 4) {
             *stop = -1;
