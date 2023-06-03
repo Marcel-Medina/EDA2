@@ -122,7 +122,6 @@ int menu(int *stop, User **head) {
             if (subopcio == 1) {
                 insert_user(head);
             } else if (subopcio == 2) {
-                char filename[MAX_LENGTH];
                 read_users_from_file(head);
             } else {
                 printf("Opció no vàlida\n");
@@ -156,9 +155,7 @@ int menu(int *stop, User **head) {
                 printf("Tria una opció:");
                 scanf("%d", &eleccio);
 
-                if(eleccio==1){
-
-                }
+                // Aquí debes agregar la lógica para cada opción del submenú
             }
         } else if (opcio == 4) {
             *stop = -1;

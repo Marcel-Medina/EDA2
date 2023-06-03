@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S "/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2" -B "/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/cmake-build-debug"
+"C:\Program Files\JetBrains\CLion 2022.3.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\Usuario\CLionProjects\EDA2 -B C:\Users\Usuario\CLionProjects\EDA2\cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/cmake-build-debug
+-- Build files have been written to: C:/Users/Usuario/CLionProjects/EDA2/cmake-build-debug

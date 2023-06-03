@@ -8,8 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/main.c" "CMakeFiles/EDA2.dir/main.c.o" "gcc" "CMakeFiles/EDA2.dir/main.c.o.d"
-  "/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2/proves.c" "CMakeFiles/EDA2.dir/proves.c.o" "gcc" "CMakeFiles/EDA2.dir/proves.c.o.d"
+  "C:/Users/Usuario/CLionProjects/EDA2/main.c" "CMakeFiles/EDA2.dir/main.c.obj" "gcc" "CMakeFiles/EDA2.dir/main.c.obj.d"
   )
 
 # Targets to which this target links.
