@@ -3,13 +3,19 @@
 #include <string.h>
 
 #define MAX_LIKINGS 5
-#define MAX_LENGTH 50
+#define MAX_LENGTH 100
 
 typedef struct llista_solicituds {
-    char persona;
+    char persona[MAX_LENGTH];
     struct llista_solicituds *tail;
     struct llista_solicituds *head;
 } Solicituds;
+
+typedef struct publicacion_t {
+    char autor[MAX_LENGTH];
+    char contenido[MAX_LENGTH];
+    struct publicacion_t *next;
+} Publicacion;
 
 typedef struct user_t {
     char Username[MAX_LENGTH];
@@ -19,17 +25,19 @@ typedef struct user_t {
     char List_Likings[MAX_LIKINGS][MAX_LENGTH];
     struct user_t *next;
     Solicituds llista;
+    Publicacion *publicaciones;
 } User;
 
-int linear_search(User *index, char usuari[MAX_LENGTH]) {
-    while (strcmp(index->Username, usuari) != 0) {
-        index = index->next;
+
+User *find_user(User *head, char username[MAX_LENGTH]) {
+    User *current = head;
+    while (current != NULL) {
+        if (strcmp(current->Username, username) == 0) {
+            return current;
+        }
+        current = current->next;
     }
-    if (index == NULL) {
-        return -1;
-    } else {
-        return 0;
-    }
+    return NULL;
 }
 
 void insert_user(User **head) {
@@ -47,16 +55,16 @@ void insert_user(User **head) {
         node->next = NULL;
     }
 
-    printf("Usuari:");
+    printf("Usuari: ");
     scanf("%s", node->Username);
-    printf("Edat:");
+    printf("Edat: ");
     scanf("%d", &node->Age);
-    printf("Ubicació:");
+    printf("Ubicació: ");
     scanf("%s", node->Location);
-    printf("Correu:");
+    printf("Correu: ");
     scanf("%s", node->Mail);
     getchar();
-    printf("5 Hobbies:");
+    printf("5 Hobbies: ");
     char input[MAX_LIKINGS * MAX_LENGTH];
     fgets(input, sizeof(input), stdin);
     char *token = strtok(input, ",");
@@ -69,54 +77,123 @@ void insert_user(User **head) {
 }
 
 void read_users_from_file(User **head) {
+
     FILE *file = fopen("../UserList.txt", "r");
     if (file == NULL) {
         printf("No se pudo abrir el archivo\n");
         return;
     }
 
-    char line[MAX_LENGTH * 7];
-
+    char line[MAX_LENGTH];
     while (fgets(line, sizeof(line), file)) {
-        User *node = (User *)malloc(sizeof(User));
-        User *index = *head;
+        User *new_user = (User *)malloc(sizeof(User));
+        sscanf(line, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",
+               new_user->Username, &(new_user->Age), new_user->Mail, new_user->Location,
+               new_user->List_Likings[0], new_user->List_Likings[1], new_user->List_Likings[2],
+               new_user->List_Likings[3], new_user->List_Likings[4]);
+
+        new_user->next = NULL;
 
         if (*head == NULL) {
-            *head = node;
-            node->next = NULL;
+            *head = new_user;
         } else {
-            while (index->next != NULL) {
-                index = index->next;
+            User *current = *head;
+            while (current->next != NULL) {
+                current = current->next;
             }
-            index->next = node;
-            node->next = NULL;
+            current->next = new_user;
         }
-
-        sscanf(line, "%[^,],%d,%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^,]",node->Username, &node->Age, node->Mail, node->Location,node->List_Likings[0], node->List_Likings[1],node->List_Likings[2], node->List_Likings[3],node->List_Likings[4]);
     }
 
     fclose(file);
 }
 
-int menu(int *stop, User **head) {
-    while (*stop == 0) {
-        *stop = 0;
-        int opcio;
+void realizar_publicacion(User *user) {
+    Publicacion *new_post = (Publicacion *)malloc(sizeof(Publicacion));
+    printf("Escribe tu publicacion:\n");
+    fgets(new_post->contenido, sizeof(new_post->contenido), stdin);
+    new_post->contenido[strcspn(new_post->contenido, "\n")] = 0;
+    strcpy(new_post->autor, user->Username);
+    new_post->next = NULL;
 
-        printf("\n--------MENU--------\n");
-        printf("1. Insertar un nou usuari\n");
-        printf("2. Llistar tots els usuaris\n");
-        printf("3. Operar com un usuari específic\n");
-        printf("4. Sortir\n");
-        printf("--------------------\n");
-        printf("Tria una opció:");
-        scanf("%d", &opcio);
+    if (user->publicaciones == NULL) {
+        user->publicaciones = new_post;
+    } else {
+        Publicacion *current = user->publicaciones;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_post;
+    }
+}
 
-        if (opcio == 1) {
+void listar_publicaciones(User *head) {
+    User *current = head;
+    printf("\nPublicacions:\n");
+    while (current != NULL) {
+        Publicacion *post = current->publicaciones;
+        if (post == NULL) {
+        } else {
+            while (post != NULL) {
+                printf("- %s: %s\n", post->autor, post->contenido);
+                post = post->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
+
+void send_friend_request(User *sender, User *recipient) {
+    Solicituds *new_request = (Solicituds *)malloc(sizeof(Solicituds));
+    strcpy(new_request->persona, sender->Username);
+    new_request->head = sender;
+    new_request->tail = recipient->llista.head;
+
+    if (recipient->llista.head == NULL) {
+        recipient->llista.head = new_request;
+        recipient->llista.tail = new_request;
+    } else {
+        recipient->llista.tail->tail = new_request;
+        recipient->llista.tail = new_request;
+    }
+}
+
+void handle_friend_requests(User *user) {
+    printf("Tienes las siguientes solicitudes de amistad:\n");
+    Solicituds *current = user->llista.head;
+    int count = 0;
+    while (current != NULL) {
+        printf("- %s\n", current->persona);
+        current = current->tail;
+        count++;
+    }
+
+    if (count == 0) {
+        printf("No tienes solicitudes de amistad pendientes.\n");
+    }
+}
+
+void menu(User **head) {
+    int option = 0;
+    char username[MAX_LENGTH];
+
+    while (option != 4) {
+        printf("\nOpciones:\n");
+        printf("1. Insertar usuario\n");
+        printf("2. Listar usuarios\n");
+        printf("3. Acciones como usuario\n");
+        printf("4. Salir\n");
+        printf("Selecciona una opcion: ");
+        scanf("%d", &option);
+        getchar();
+
+        if (option == 1) {
             int subopcio;
-            printf("1. Insertar un nou usuari manualment\n");
-            printf("2. Afegir usuaris des d'un fitxer\n");
-            printf("Tria una opció:");
+            printf("\nOpciones para añadir usuarios:\n");
+            printf("1. Insertar un nuevo usuario manualmente\n");
+            printf("2. Añadir usuarios desde un archivo\n");
+            printf("Elige una opción: ");
             scanf("%d", &subopcio);
 
             if (subopcio == 1) {
@@ -124,63 +201,74 @@ int menu(int *stop, User **head) {
             } else if (subopcio == 2) {
                 read_users_from_file(head);
             } else {
-                printf("Opció no vàlida\n");
+                printf("Opción no valida\n");
             }
-        } else if (opcio == 2) {
+        } else if (option == 2) {
             User *index = *head;
             if (index == NULL) {
-                printf("La llista està buida\n");
+                printf("La lista está vacia\n");
             }
             while (index != NULL) {
-                printf("Usuari: %s\n", index->Username);
+                printf("Usuario: %s\n", index->Username);
                 index = index->next;
             }
-        } else if (opcio == 3) {
-            printf("Introdueix el nom de l'usuari:");
-            char usuari[MAX_LENGTH];
-            scanf("%s", usuari);
-            User *index = *head;
+        } else if (option == 3) {
+            printf("Ingresa el nombre del usuario: ");
+            scanf("%s", username);
+            getchar();
+            User *current_user = find_user(*head, username);
+            if (current_user == NULL) {
+                printf("Usuario no encontrado.\n");
+            } else {
+                int sub_option = 0;
+                while (sub_option != 5) {
+                    printf("\nAcciones del usuario:\n");
+                    printf("1. Realizar una publicacion\n");
+                    printf("2. Ver publicaciones\n");
+                    printf("3. Enviar una solicitud de amistad\n");
+                    printf("4. Gestionar solicitudes de amistad\n");
+                    printf("5. Salir\n");
+                    printf("Selecciona una opcion: ");
+                    scanf("%d", &sub_option);
+                    getchar();
 
-            if (linear_search(index, usuari) == -1) {
-                printf("No existeix l'usuari\n");
-            } else if (linear_search(index, usuari) == 0) {
-                int eleccio;
-                printf("\n--------SUBMENU--------\n");
-                printf("1. Enviar sol·licituds d'amistat\n");
-                printf("2. Gestionar les sol·licituds pendents\n");
-                printf("3. Realitzar una publicació\n");
-                printf("4. Llistar les publicacions de l'usuari seleccionat\n");
-                printf("5. Tornar al menu principal\n");
-                printf("--------------------\n");
-                printf("Tria una opció:");
-                scanf("%d", &eleccio);
-
-                // Aquí debes agregar la lógica para cada opción del submenú
+                    if (sub_option == 1) {
+                        realizar_publicacion(current_user);
+                    } else if (sub_option == 2) {
+                        listar_publicaciones(current_user);
+                    } else if (sub_option == 3) {
+                        printf("\nIngresa el nombre de usuario de la persona a la que quieres enviar la solicitud de amistad: ");
+                        scanf("%s", username);
+                        getchar();
+                        User *recipient = find_user(*head, username);
+                        if (recipient == NULL) {
+                            printf("\nUsuario no encontrado.\n");
+                        } else {
+                            send_friend_request(current_user, recipient);
+                            printf("\nSolicitud de amistad enviada.\n");
+                        }
+                    } else if (sub_option == 4) {
+                        handle_friend_requests(current_user);
+                    } else if (sub_option == 5) {
+                        printf("\nVolviendo al menu principal.\n");
+                    } else {
+                        printf("\nOpcion invalida.\n");
+                    }
+                }
             }
-        } else if (opcio == 4) {
-            *stop = -1;
-        } else {
-            printf("L'opció que has triat no és vàlida, torna a intentar-ho\n");
-            scanf("%d", &opcio);
-        }
+        } else if (option == 4) {
+            printf("\nSaliendo...\n");
 
-        return *stop;
+        } else {
+            printf("\nOpcion invalida.\n");
+        }
     }
 }
 
+
 int main() {
-    int stop = 0;
     User *head = NULL;
-
-    while (menu(&stop, &head) != -1) {
-    }
-
-    User *current = head;
-    while (current != NULL) {
-        User *next = current->next;
-        free(current);
-        current = next;
-    }
-
+    read_users_from_file(&head);
+    menu(&head);
     return 0;
 }
