@@ -77,7 +77,6 @@ void insert_user(User **head) {
 }
 
 void read_users_from_file(User **head) {
-
     FILE *file = fopen("../UserList.txt", "r");
     if (file == NULL) {
         printf("No se pudo abrir el archivo\n");
@@ -104,7 +103,6 @@ void read_users_from_file(User **head) {
             current->next = new_user;
         }
     }
-
     fclose(file);
 }
 
@@ -126,11 +124,9 @@ void realizar_publicacion(User *user) {
         current->next = new_post;
     }
 }
-
-void listar_publicaciones(User *head) {
+void listar_mis_publicaciones(User *head) {
     User *current = head;
-    printf("\nPublicacions:\n");
-    while (current != NULL) {
+    printf("\nPublicacions del usuari:\n");
         Publicacion *post = current->publicaciones;
         if (post == NULL) {
         } else {
@@ -139,10 +135,13 @@ void listar_publicaciones(User *head) {
                 post = post->next;
             }
         }
-        current = current->next;
-    }
 }
 
+
+void listar_publicaciones() {
+    printf("\nPublicacions:\n");
+
+}
 
 void send_friend_request(User *sender, User *recipient) {
     Solicituds *new_request = (Solicituds *)malloc(sizeof(Solicituds));
@@ -192,7 +191,7 @@ void menu(User **head) {
             int subopcio;
             printf("\nOpciones para añadir usuarios:\n");
             printf("1. Insertar un nuevo usuario manualmente\n");
-            printf("2. Añadir usuarios desde un archivo\n");
+            printf("2. Añadir usuarios desde un archivo(ya estan)\n");
             printf("Elige una opción: ");
             scanf("%d", &subopcio);
 
@@ -218,16 +217,17 @@ void menu(User **head) {
             getchar();
             User *current_user = find_user(*head, username);
             if (current_user == NULL) {
-                printf("Usuario no encontrado.\n");
+                printf("\nUsuario no encontrado.\n");
             } else {
                 int sub_option = 0;
-                while (sub_option != 5) {
+                while (sub_option != 6) {
                     printf("\nAcciones del usuario:\n");
                     printf("1. Realizar una publicacion\n");
-                    printf("2. Ver publicaciones\n");
-                    printf("3. Enviar una solicitud de amistad\n");
-                    printf("4. Gestionar solicitudes de amistad\n");
-                    printf("5. Salir\n");
+                    printf("2. Mostrar tus publicaciones\n");
+                    printf("3. Ver todas las publicaciones\n");
+                    printf("4. Enviar una solicitud de amistad\n");
+                    printf("5. Gestionar solicitudes de amistad\n");
+                    printf("6. Salir\n");
                     printf("Selecciona una opcion: ");
                     scanf("%d", &sub_option);
                     getchar();
@@ -235,8 +235,10 @@ void menu(User **head) {
                     if (sub_option == 1) {
                         realizar_publicacion(current_user);
                     } else if (sub_option == 2) {
-                        listar_publicaciones(current_user);
+                        listar_mis_publicaciones(current_user);
                     } else if (sub_option == 3) {
+                        listar_publicaciones();
+                    } else if (sub_option == 4) {
                         printf("\nIngresa el nombre de usuario de la persona a la que quieres enviar la solicitud de amistad: ");
                         scanf("%s", username);
                         getchar();
@@ -247,9 +249,9 @@ void menu(User **head) {
                             send_friend_request(current_user, recipient);
                             printf("\nSolicitud de amistad enviada.\n");
                         }
-                    } else if (sub_option == 4) {
-                        handle_friend_requests(current_user);
                     } else if (sub_option == 5) {
+                        handle_friend_requests(current_user);
+                    } else if (sub_option == 6) {
                         printf("\nVolviendo al menu principal.\n");
                     } else {
                         printf("\nOpcion invalida.\n");
@@ -264,7 +266,6 @@ void menu(User **head) {
         }
     }
 }
-
 
 int main() {
     User *head = NULL;
