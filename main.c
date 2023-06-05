@@ -142,7 +142,6 @@ void listar_publicaciones() {
     printf("\nPublicacions:\n");
 
 }
-
 void send_friend_request(User *sender, User *recipient) {
     Solicituds *new_request = (Solicituds *)malloc(sizeof(Solicituds));
     strcpy(new_request->persona, sender->Username);
