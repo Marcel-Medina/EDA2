@@ -5,11 +5,19 @@
 #define MAX_LIKINGS 5
 #define MAX_LENGTH 100
 
-typedef struct llista_solicituds {
-    char persona[MAX_LENGTH];
-    struct llista_solicituds *tail;
-    struct llista_solicituds *head;
-} Solicituds;
+typedef struct solicitud {
+    char emisor[50];
+    char receptor[50];
+    int aceptada;
+    struct solicitud *next;
+} SolicitudAmistad;
+
+typedef struct lista_solicitudes {
+
+    SolicitudAmistad *head;
+    SolicitudAmistad *tail;
+
+} lista_solicitudes;
 
 typedef struct publicacion_t {
     char autor[MAX_LENGTH];
@@ -24,8 +32,9 @@ typedef struct user_t {
     char Location[MAX_LENGTH];
     char List_Likings[MAX_LIKINGS][MAX_LENGTH];
     struct user_t *next;
-    Solicituds llista;
+    lista_solicitudes llista;
     Publicacion *publicaciones;
+
 } User;
 
 
@@ -143,32 +152,58 @@ void listar_publicaciones() {
 
 }
 void send_friend_request(User *sender, User *recipient) {
-    Solicituds *new_request = (Solicituds *)malloc(sizeof(Solicituds));
-    strcpy(new_request->persona, sender->Username);
-    new_request->head = sender;
-    new_request->tail = recipient->llista.head;
-
+    SolicitudAmistad *new_request = (SolicitudAmistad *)
+            malloc(sizeof(SolicitudAmistad));
+    strcpy(new_request->emisor, sender->Username);
+    strcpy(new_request->receptor, recipient->Username);
+    new_request->next = NULL;
     if (recipient->llista.head == NULL) {
         recipient->llista.head = new_request;
         recipient->llista.tail = new_request;
-    } else {
-        recipient->llista.tail->tail = new_request;
+    }
+    else {
+        recipient->llista.tail->next = new_request;
         recipient->llista.tail = new_request;
     }
 }
 
-void handle_friend_requests(User *user) {
-    printf("Tienes las siguientes solicitudes de amistad:\n");
-    Solicituds *current = user->llista.head;
-    int count = 0;
-    while (current != NULL) {
-        printf("- %s\n", current->persona);
-        current = current->tail;
-        count++;
+void solicitudes_aceptadas(User *user){
+    SolicitudAmistad *index = user->llista.head;
+    while(index != NULL){
+        if(index->aceptada == 1){
+            printf("-%s",index->emisor);
+        }
+        index = index->next;
     }
-
-    if (count == 0) {
-        printf("No tienes solicitudes de amistad pendientes.\n");
+}
+void handle_friend_requests(User *user) {
+    SolicitudAmistad *index = user->llista.head;
+    if(index == NULL){
+        printf("No tienes solicitudes de amistad");
+    }
+    int opcion = 0;
+    while (index != NULL) {
+        printf("Tienes una solicitud de amistad de: %s\n", index->emisor);
+        printf("1.ACEPTAR\n2.RECHAZAR");
+        scanf("%d",&opcion);
+        getchar();
+        if(opcion == 1){
+            index->aceptada = 1;
+        }
+        else if (opcion == 2){
+            index->aceptada = 0;
+        }
+        else{
+            printf("Opción incorrecta");
+        }
+        index = index->next;
+    }
+    int llista_amics = 0;
+    printf("Quieres ver las solicitudes aceptadas?");
+    printf("1.SI\n2.NO");
+    scanf("%d",&llista_amics);
+    if(llista_amics == 1){
+        solicitudes_aceptadas(user);
     }
 }
 
