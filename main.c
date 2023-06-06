@@ -19,10 +19,17 @@ typedef struct lista_solicitudes {
 
 } lista_solicitudes;
 
+typedef struct {
+    char dicionario[MAX_LENGTH];
+    int count_word;
+    int count_total;
+} WordCount;
+
 typedef struct publicacion_t {
     char autor[MAX_LENGTH];
     char contenido[MAX_LENGTH];
     struct publicacion_t *next;
+
 } Publicacion;
 
 typedef struct user_t {
@@ -37,6 +44,59 @@ typedef struct user_t {
 
 } User;
 
+
+
+void wordCount(char publicacion[MAX_LENGTH], WordCount *countArray) {
+    char *copy = strdup(publicacion);
+    char *word = strtok(copy, " ");
+
+    while (word != NULL) {
+        int found = 0;
+
+        for (int i = 0; i < countArray->count_total; i++) {
+            if (strcmp(countArray[i].dicionario, word) == 0) {
+                countArray[i].count_word++;
+                found = 1;
+                break;
+            }
+        }
+
+        if (found == 0) {
+            if (countArray->count_total == MAX_LENGTH) {
+                printf("El número máximo de palabras se ha alcanzado. Algunas palabras pueden no contarse.\n");
+                break;
+            }
+
+            strcpy(countArray[countArray->count_total].dicionario, word);
+            countArray[countArray->count_total].count_word = 1;
+            countArray->count_total++;
+        }
+
+        word = strtok(NULL, " ");
+    }
+
+}
+
+WordCount dicionario_global;
+
+void imprimirPalabrasFrecuentes(WordCount* diccionario) {
+    // Ordenar el diccionario en orden descendente por conteo usando bubble sort
+    for (int i = 0; i < diccionario->count_total - 1; i++) {
+        for (int j = 0; j < diccionario->count_total - i - 1; j++) {
+            if (diccionario[j].count_word< diccionario[j + 1].count_word) {
+                WordCount temp = diccionario[j];
+                diccionario[j] = diccionario[j + 1];
+                diccionario[j + 1] = temp;
+            }
+        }
+    }
+
+    // Imprimir las primeras MAX_WORDS palabras frecuentes
+    printf("Las palabras más frecuentes son:\n");
+    for (int i = 0; i < 10&& i < diccionario->count_total; i++) {
+        printf("%s: %d\n", diccionario[i].dicionario, diccionario[i].count_word);
+    }
+}
 
 User *find_user(User *head, char username[MAX_LENGTH]) {
     User *current = head;
@@ -125,13 +185,15 @@ void realizar_publicacion(User *user) {
 
     if (user->publicaciones == NULL) {
         user->publicaciones = new_post;
-    } else {
+    }
+    else {
         Publicacion *current = user->publicaciones;
         while (current->next != NULL) {
             current = current->next;
         }
         current->next = new_post;
     }
+    wordCount(new_post->contenido,&dicionario_global);
 }
 void listar_mis_publicaciones(User *head) {
     User *current = head;
@@ -217,6 +279,7 @@ void menu(User **head) {
         printf("2. Listar usuarios\n");
         printf("3. Acciones como usuario\n");
         printf("4. Salir\n");
+        printf("5. Mostrar diccionari\n");
         printf("Selecciona una opcion: ");
         scanf("%d", &option);
         getchar();
@@ -268,6 +331,8 @@ void menu(User **head) {
 
                     if (sub_option == 1) {
                         realizar_publicacion(current_user);
+
+
                     } else if (sub_option == 2) {
                         listar_mis_publicaciones(current_user);
                     } else if (sub_option == 3) {
@@ -292,10 +357,14 @@ void menu(User **head) {
                     }
                 }
             }
-        } else if (option == 4) {
+        }
+        else if (option == 4) {
             printf("\nSaliendo...\n");
 
-        } else {
+        } else if(option == 5){
+            imprimirPalabrasFrecuentes(&dicionario_global);
+        }
+        else {
             printf("\nOpcion invalida.\n");
         }
     }
