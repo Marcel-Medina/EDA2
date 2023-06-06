@@ -76,7 +76,7 @@ void wordCount(char publicacion[MAX_LENGTH], WordCount *countArray) {
 
 }
 
-WordCount dicionario_global;
+
 
 void imprimirPalabrasFrecuentes(WordCount* diccionario) {
     // Ordenar el diccionario en orden descendente por conteo usando bubble sort
@@ -92,10 +92,12 @@ void imprimirPalabrasFrecuentes(WordCount* diccionario) {
 
     // Imprimir las primeras MAX_WORDS palabras frecuentes
     printf("Las palabras más frecuentes son:\n");
-    for (int i = 0; i < 10&& i < diccionario->count_total; i++) {
+    for (int i = 0; i < 10; i++) {
         printf("%s: %d\n", diccionario[i].dicionario, diccionario[i].count_word);
     }
 }
+
+WordCount dicionario_global;
 
 User *find_user(User *head, char username[MAX_LENGTH]) {
     User *current = head;
