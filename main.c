@@ -45,7 +45,6 @@ typedef struct user_t {
 } User;
 
 
-
 void wordCount(char publicacion[MAX_LENGTH], WordCount *countArray) {
     char *copy = strdup(publicacion);
     char *word = strtok(copy, " ");
@@ -198,14 +197,14 @@ void realizar_publicacion(User *user) {
 void listar_mis_publicaciones(User *head) {
     User *current = head;
     printf("\nPublicacions del usuari:\n");
-        Publicacion *post = current->publicaciones;
-        if (post == NULL) {
-        } else {
-            while (post != NULL) {
-                printf("- %s: %s\n", post->autor, post->contenido);
-                post = post->next;
-            }
+    Publicacion *post = current->publicaciones;
+    if (post == NULL) {
+    } else {
+        while (post != NULL) {
+            printf("- %s: %s\n", post->autor, post->contenido);
+            post = post->next;
         }
+    }
 }
 
 
