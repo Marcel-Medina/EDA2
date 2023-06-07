@@ -1,8 +1,7 @@
 #include "estructures_i_funcions.h"
 
 void send_friend_request(User *sender, User *recipient) {
-    SolicitudAmistad *new_request = (SolicitudAmistad *)
-            malloc(sizeof(SolicitudAmistad)); //Creamos la nueva solicitud de amistad
+    SolicitudAmistad *new_request = (SolicitudAmistad *)malloc(sizeof(SolicitudAmistad)); //Creamos la nueva solicitud de amistad
     strcpy(new_request->emisor, sender->Username); //Copiamos el nombre del receptor y del emisor en la nueva solicitud
     strcpy(new_request->receptor, recipient->Username);
     new_request->next = NULL; //Como la nueva solicitud sera la última de la cola le asignamos NULL al puntero next
@@ -10,7 +9,7 @@ void send_friend_request(User *sender, User *recipient) {
         recipient->llista.head = new_request;
         recipient->llista.tail = new_request;
     }
-    else { //Vamos recorriendo la lista hasta que encontramos la última solicitud
+    else {
         recipient->llista.tail->next = new_request; // A la última solicitud le asignamos como next la nueva solicitud
         recipient->llista.tail = new_request; // Asignamos la nueva solicitud como la última de la lista
     }
