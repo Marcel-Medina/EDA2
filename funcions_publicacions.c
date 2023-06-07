@@ -21,13 +21,14 @@ void realizar_publicacion(User *user) {
     }
     wordCount(new_post->contenido,&dicionario_global);
 }
-void listar_mis_publicaciones(User *head) {
-    User *current = head;
-    printf("\nPublicacions del usuari:\n");
-    Publicacion *post = current->publicaciones;
+void listar_mis_publicaciones(User *usuario) {
+
+    Publicacion *post = usuario->publicaciones;
     if (post == NULL) {
+        printf("El usuario no tiene publicaciones");
     } else {
         while (post != NULL) {
+            printf("\nPublicacions del usuari:\n");
             printf("- %s: %s\n", post->autor, post->contenido);
             post = post->next;
         }
@@ -35,7 +36,10 @@ void listar_mis_publicaciones(User *head) {
 }
 
 
-void listar_publicaciones() {
-    printf("\nPublicacions:\n");
+void listar_publicaciones(User* head) {
+    printf("\nIntroduce el nombre del usuario:\n");
+    char usuari[MAX_LENGTH];
+    scanf("%s",usuari);
+    listar_mis_publicaciones(find_user(head,usuari));
 
 }

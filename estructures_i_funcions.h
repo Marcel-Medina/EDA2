@@ -12,16 +12,25 @@
 typedef struct solicitud {
     char emisor[50];
     char receptor[50];
-    int aceptada;
     struct solicitud *next;
 } SolicitudAmistad;
 
-typedef struct lista_solicitudes {
+typedef struct {
 
     SolicitudAmistad *head;
     SolicitudAmistad *tail;
 
 } lista_solicitudes;
+
+
+typedef struct solicitud_aceptada{
+    struct solicitud_aceptada *next;
+    char amic[MAX_LENGTH];
+}solicitud_aceptada;
+
+typedef struct {
+    solicitud_aceptada *head;
+}lista_amigos;
 
 typedef struct {
     char dicionario[MAX_LENGTH];
@@ -36,6 +45,8 @@ typedef struct publicacion_t {
 
 } Publicacion;
 
+
+
 typedef struct user_t {
     char Username[MAX_LENGTH];
     int Age;
@@ -45,8 +56,10 @@ typedef struct user_t {
     struct user_t *next;
     lista_solicitudes llista;
     Publicacion *publicaciones;
+    lista_amigos amigos;
 
 } User;
+
 
 void wordCount(char publicacion[MAX_LENGTH], WordCount *countArray);
 WordCount dicionario_global;
@@ -56,9 +69,10 @@ void insert_user(User **head);
 void read_users_from_file(User **head);
 void realizar_publicacion(User *user);
 void listar_mis_publicaciones(User *head);
-void listar_publicaciones();
+void listar_publicaciones(User *head);
 void send_friend_request(User *sender, User *recipient);
-void solicitudes_aceptadas(User *user);
+void anadir_amigo(User *user,char amic[MAX_LENGTH]);
+void mostrar_amigos(User *user);
 void handle_friend_requests(User *user);
 void menu(User **head);
 

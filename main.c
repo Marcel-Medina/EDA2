@@ -1,5 +1,6 @@
 #include "estructures_i_funcions.h"
 
+
 void menu(User **head) {
     int option = 0;
     char username[MAX_LENGTH];
@@ -48,14 +49,15 @@ void menu(User **head) {
                 printf("\nUsuario no encontrado.\n");
             } else {
                 int sub_option = 0;
-                while (sub_option != 6) {
+                while (sub_option != 7) {
                     printf("\nAcciones del usuario:\n");
                     printf("1. Realizar una publicacion\n");
                     printf("2. Mostrar tus publicaciones\n");
                     printf("3. Ver todas las publicaciones\n");
                     printf("4. Enviar una solicitud de amistad\n");
                     printf("5. Gestionar solicitudes de amistad\n");
-                    printf("6. Salir\n");
+                    printf("6. Ver lista de amigos\n");
+                    printf("7. Salir\n");
                     printf("Selecciona una opcion: ");
                     scanf("%d", &sub_option);
                     getchar();
@@ -67,7 +69,7 @@ void menu(User **head) {
                     } else if (sub_option == 2) {
                         listar_mis_publicaciones(current_user);
                     } else if (sub_option == 3) {
-                        listar_publicaciones();
+                        listar_publicaciones(*head);
                     } else if (sub_option == 4) {
                         printf("\nIngresa el nombre de usuario de la persona a la que quieres enviar la solicitud de amistad: ");
                         scanf("%s", username);
@@ -81,9 +83,14 @@ void menu(User **head) {
                         }
                     } else if (sub_option == 5) {
                         handle_friend_requests(current_user);
-                    } else if (sub_option == 6) {
+                    }
+                    else if(sub_option == 6){
+                        mostrar_amigos(current_user);
+                    }
+                    else if (sub_option == 7) {
                         printf("\nVolviendo al menu principal.\n");
-                    } else {
+                    }
+                    else {
                         printf("\nOpcion invalida.\n");
                     }
                 }

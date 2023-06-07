@@ -1,3 +1,3 @@
-C:/Users/Usuario/CLionProjects/EDA2/cmake-build-debug/CMakeFiles/EDA2.dir
-C:/Users/Usuario/CLionProjects/EDA2/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Usuario/CLionProjects/EDA2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2(1)/cmake-build-debug/CMakeFiles/EDA2.dir
+/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2(1)/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/Estructura de Dades i Algoritmes/EDA2(1)/cmake-build-debug/CMakeFiles/rebuild_cache.dir
