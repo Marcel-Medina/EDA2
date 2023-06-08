@@ -1,9 +1,9 @@
 # ESTRUCTURAS DE DATOS Y ALGORITMOS II, 2022-2023
 ## JAJAGRAM, Centrada en chistes
 Creada por:
- - Marcel Medina Mestre, 
- - Gori Ribot Sansó,
- - Shuangjie Xia, 
+ - Marcel Medina Mestre, 268928
+ - Gori Ribot Sansó, 2542444
+ - Shuangjie Xia, 269610
 
 ---
 
