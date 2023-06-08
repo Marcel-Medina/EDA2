@@ -139,7 +139,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=EDA2
+CMAKE_PROJECT_NAME:STATIC=PRACTICA_EDA_II
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/ranlib
@@ -214,6 +214,15 @@ EDA2_SOURCE_DIR:STATIC=/Users/gori/Desktop/Enginyeria Matemàtica /2n trimestre/
 
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/sbin/sysctl
+
+//Value Computed by CMake
+PRACTICA_EDA_II_BINARY_DIR:STATIC=C:/Users/Usuario/CLionProjects/EDA2/cmake-build-debug
+
+//Value Computed by CMake
+PRACTICA_EDA_II_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+PRACTICA_EDA_II_SOURCE_DIR:STATIC=C:/Users/Usuario/CLionProjects/EDA2
 
 
 ########################

@@ -45,5 +45,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/EDA2.dir/DependInfo.cmake"
+  "CMakeFiles/PRACTICA_EDA_II.dir/DependInfo.cmake"
   )
