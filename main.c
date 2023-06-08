@@ -34,7 +34,6 @@ void showMenu() {
 
         scanf("%d", &option);
         getchar();
-
         while (option < 1 || option > 5) {
             printError(INVALID_OPTION_MESSAGE);
             printf("Enter your option (1-5): ");
