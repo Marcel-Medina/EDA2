@@ -40,7 +40,6 @@ void showMenu() {
             printf("Enter your option (1-5): ");
             scanf("%d", &option);
         }
-
         printf("\n");
 
         if (option == INSERT_USER_SIGNAL) {
